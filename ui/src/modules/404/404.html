@@ -1,0 +1,21 @@
+<div class="container-fluid w-100 vh-100 error-container">
+    <div class="pt-2 h-100">
+        <div>
+            <img :src="`${context}img/404.png`" class="error-image">
+        </div>
+        <div class="text-center mt-3 h-100 center text-white">
+            <h1 class="text-white">
+                Oops
+            </h1>
+            <p class="text-white h2">
+                We couldn't find your page...
+            </p>
+            <p class="text-white h4">
+                Let's get back home.
+            </p>
+            <p class="text-white h4 mt-4">
+                <a :href="context" title="Back to home" class="text-white text-decoration-underline">Go back to the homepage</a>
+            </p>
+        </div>
+    </div>
+</div>

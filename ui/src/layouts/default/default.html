@@ -1,0 +1,12 @@
+<div id="app">
+    <AppHeader />
+    <div class="main">
+        <navbar-component />
+        <div class="p-0 h-100">
+            <router-view :key="$route.fullPath">
+                <slot />
+            </router-view>
+        </div>
+    </div>
+    <AppFooter />
+</div>

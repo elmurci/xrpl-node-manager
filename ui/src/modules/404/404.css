@@ -1,0 +1,11 @@
+body {
+    background: linear-gradient(to right, rgba(55, 161, 127, 1), rgb(95, 204, 128));
+}
+
+.error-container {
+    margin-top: 6%;
+}
+
+.error-image {
+    max-width: 400px;
+}
