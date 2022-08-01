@@ -11,9 +11,8 @@
 
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a volume mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/workspace",
-	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
-		
+	"workspaceFolder": "/workspace/service",
+	
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -45,5 +44,5 @@
 	// "postCreateCommand": "rustc --version",
 
 	// Comment out to run as root instead.
-	// "remoteUser": "vscode"
+	"remoteUser": "vscode"
 }
