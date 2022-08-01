@@ -4,14 +4,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software; see the source for copying conditions.
 # There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
- 
 
 # This program built for i386-apple-darwin11.3.0
- 
-make: *** No rule to make target `all'.  Stop.
 
-
-# Make data base, printed on Mon Aug  1 15:56:22 2022
+# Make data base, printed on Mon Aug  1 16:33:31 2022
 
 # Variables
 
@@ -33,6 +29,9 @@ CURDIR := /Users/javiromero/Documents/dev/xrpl/xrpl-node-manager
 SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"es","availableLanguages":{},"_languagePackSupport":true}
+ 
+make: *** No rule to make target `all'.  Stop.
+
 # environment
 _ = /usr/bin/make
 # makefile
@@ -47,8 +46,6 @@ VSCODE_CWD = /
 PATH = /Users/javiromero/.yarn/bin:/Users/javiromero/.config/yarn/global/node_modules/.bin:/opt/homebrew/opt/openjdk/bin:/Users/javiromero/.nvm/versions/node/v14.18.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Users/javiromero/.cargo/bin:/Users/javiromero/Documents/dev/tools/wabt-1.0.24/bin:/Users/javiromero/Documents/dev/tools/wasmtime-v0.30.0
 # environment
 NVM_BIN = /Users/javiromero/.nvm/versions/node/v14.18.3/bin
-# environment
-LaunchInstanceID = BA101339-015B-4ECE-B459-F050339D0704
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
@@ -141,8 +138,6 @@ MAKEFILES :=
 <F = $(notdir $<)
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 186ad
 # automatic
 ^F = $(notdir $^)
 # default
@@ -154,9 +149,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 94435
+VSCODE_PID = 99121
 # variable set hash-table stats:
-# Load=70/1024=7%, Rehash=0, Collisions=1/91=1%
+# Load=68/1024=7%, Rehash=0, Collisions=1/89=1%
 
 # Pattern-specific Variable Values
 
@@ -186,6 +181,7 @@ all:
 # Not a target:
 .SUFFIXES:
 #  Implicit rule search has not been done.
+ 
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -238,6 +234,6 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Mon Aug  1 15:56:22 2022
+# Finished Make data base on Mon Aug  1 16:33:31 2022
 
  

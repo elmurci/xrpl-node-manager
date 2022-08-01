@@ -33,10 +33,7 @@ services:
     #   - seccomp:unconfined
     
   # You can include other services not opened by VS Code as well
-  rippled:
-    image: xrpllabsofficial/xrpld:latest
-    restart: unless-stopped
-    ports:
-      - "5005"
+  # ui:
+    # TODO
 
     # As in the "app" service, use "forwardPorts" in **devcontainer.json** to forward an app port locally.
