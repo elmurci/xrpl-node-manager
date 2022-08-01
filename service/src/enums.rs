@@ -12,6 +12,7 @@ pub enum Topic {
     Status,
     Stats,
     Config,
+    Features,
 }
 
 #[derive(Deserialize, Serialize, Debug)]

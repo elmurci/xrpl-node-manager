@@ -1,4 +1,5 @@
 <template>
+<div>
   <nav class="bg-gray-800">
     <div class="mx-auto px-8">
       <div class="relative flex items-center justify-between h-16">
@@ -47,6 +48,7 @@
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
               <router-link :to="{ path: '/' }" @click="selectOption('dashboard')" :class="getOptionClass('dashboard')" class="px-3 py-2 rounded-md text-sm font-medium">Dashboard</router-link>
               <router-link :to="{ path: '/configuration' }" @click="selectOption('configuration')" :class="getOptionClass('configuration')" class="px-3 py-2 rounded-md text-sm font-mediumm">Configuration</router-link>
+              <router-link :to="{ path: '/stats' }" @click="selectOption('stats')" :class="getOptionClass('stats')" class="px-3 py-2 rounded-md text-sm font-mediumm">Stats</router-link>
               <router-link :to="{ path: '/logs' }" @click="selectOption('logs')" :class="getOptionClass('logs')" class="px-3 py-2 rounded-md text-sm font-medium">Logs</router-link>
             </div>
           </div>
@@ -90,15 +92,18 @@
 
   <header class="bg-white shadow">
     <div class="mx-auto py-3 px-4 sm:px-6">
-      <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <h1 class="text-3xl font-bold text-gray-900 capitalize">{{option}}</h1>
     </div>
   </header>
+
+</div>
 </template>
 
 <script lang="ts">
 import WsClient from '@/util/WsClient';
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n'
+import { Topic } from '@/enums';
 import { useStore } from 'vuex';
 
 export default defineComponent({
@@ -127,9 +132,15 @@ export default defineComponent({
     getOptionClass (option: string): string {
       return option === this.option ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white';
     },
-    send(topic: string) {
+    send(topic: Topic) {
       this.isWorking = true;
       this.wsClient.send(topic);
+      if (topic === Topic.START) { // TODO: fix this, temporary 
+        setTimeout(() => {
+          this.wsClient.send(Topic.CONFIG);
+          this.wsClient.send(Topic.FEATURES);
+        }, 1000);
+      }
     },
     selectOption(path: string) {
       this.store.commit('option', path);

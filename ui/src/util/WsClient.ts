@@ -1,3 +1,4 @@
+import { Topic } from "@/enums";
 import { store } from "@/store";
 
 export default class WsClient {
@@ -12,9 +13,9 @@ export default class WsClient {
     this.connect();
   }
 
-  periodic(interval: number, message: string) {
+  periodic(interval: number, topic: Topic) {
     const intervalId = setInterval(() => {
-        this.send(message);
+        this.send(topic);
     }, interval);
   }
 
@@ -42,7 +43,7 @@ export default class WsClient {
     this.client.onmessage = (e) =>  {
         if (typeof e.data === 'string') {
             const json = JSON.parse(e.data);
-            console.log("received: " + json.topic);
+            console.log("received: " + json.topic, json);
             switch(json.topic) {
                 case 'status': 
                   if (json.message.error) {
@@ -58,6 +59,9 @@ export default class WsClient {
                 case 'config': 
                   store.commit('config', json.message);
                   break;
+                case 'features': 
+                  store.commit('features', json.message);
+                  break;
                 default:
                   // TODO
             }
@@ -66,9 +70,8 @@ export default class WsClient {
   }
 
   send(
-    topic: string,
+    topic: Topic,
   ) {
-    console.log('sending', topic);
     if (this.client.readyState === this.client.OPEN) {
         this.client.send(JSON.stringify({
             topic,

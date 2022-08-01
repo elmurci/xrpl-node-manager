@@ -25,7 +25,7 @@ async fn main() {
   let settings = get_settings();
   logger::setup();
   let result = handle_incoming_message(IncomingMessage { topic: Topic::Config }).await;
-  debug!("file {:?}", result);
+  debug!("file - {:?}", result);
   // 1. Logs
   // 2. Log rotate
   // 3. Stop

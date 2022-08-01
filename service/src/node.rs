@@ -48,6 +48,15 @@ impl<'a> Node<'a> {
             bail!(err)
         }
     }
+    
+    #[throws(_)]
+    pub(crate) async fn features(&self) -> Value {
+        debug!("Features call to {}", self.endpoint);
+        match self.rpc_client.run("feature", None).await {
+            Ok(response) => response.get("result").unwrap().to_owned(),
+            Err(error) => bail!(error)
+        }
+    }
 
     #[throws(_)]
     pub(crate) async fn config(&self) -> Value {

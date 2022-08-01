@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/javiromero/Documents/dev/xrpl/xrpl-node-manager/service'
+cargo build
+make: Leaving directory `/Users/javiromero/Documents/dev/xrpl/xrpl-node-manager/service'
+ 

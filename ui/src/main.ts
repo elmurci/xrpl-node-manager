@@ -10,11 +10,11 @@ import VueToast from "vue-toast-notification";
 import VueIframe from "vue-iframes";
 import { i18n } from './i18n'
 import ws from './util/WsClient'
+import { Topic } from './enums';
 import './index.css'
 
 const wsClient = new ws('ws://127.0.0.1:8080');
-wsClient.periodic(2000, 'status');
-wsClient.periodic(1000, 'stats');
+wsClient.periodic(2000, Topic.STATUS);
 
 createApp(App)
   .use(i18n)

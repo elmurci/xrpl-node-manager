@@ -54,8 +54,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="grid grid-cols-3 gap-4 mt-4">
-			<div class="col-span-2">
+		<div class="grid grid-cols-8 gap-4 mt-4">
+			<div class="col-span-5">
 				<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
 					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 						<thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
@@ -123,66 +123,38 @@
 					</table>
 				</div>
 			</div>
-			<div>
+			<div class="col-span-3">
 				<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
 					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 						<thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
 							<tr>
-								<th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
-									Metric
+								<th scope="col" class="py-3 px-6 bg-gray-50">
+									Feature
 								</th>
-								<th scope="col" class="py-3 px-6">
-									Value
+								<th scope="col" class="text-center py-3 px-6">
+									Enabled
+								</th>
+								<th scope="col" class="text-center py-3 px-6">
+									Supported
+								</th>
+								<th scope="col" class="text-center py-3 px-6">
+									Vetoed
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									AL Hit Rate
-								</th>
-								<td class="py-4 px-6">
-									{{stats && stats.AL_hit_rate}}
+							<tr v-for="(item, index) in features.features" class="border-b border-gray-200 dark:border-gray-700">
+								<td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+									{{item.name}}
 								</td>
-							</tr>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									Read Queue
-								</th>
-								<td class="py-4 px-6">
-									{{stats && stats.read_queue}}
+								<td class="py-4 text-center">
+									<UiTickOrX :check="item.enabled"></UiTickOrX>
 								</td>
-							</tr>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									Read threads
-								</th>
-								<td class="py-4 px-6">
-									4/4
+								<td class="py-4 text-center">
+									<UiTickOrX :check="item.supported"></UiTickOrX>
 								</td>
-							</tr>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									Write load
-								</th>
-								<td class="py-4 px-6">
-									{{stats && stats.write_load}}
-								</td>
-							</tr>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									Historical Per minute
-								</th>
-								<td class="py-4 px-6">
-									{{stats && stats.historical_perminute}}
-								</td>
-							</tr>
-							<tr class="border-b border-gray-200 dark:border-gray-700">
-								<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-									Ledger Hit Rate
-								</th>
-								<td class="py-4 px-6">
-									{{stats && stats.ledger_hit_rate}}
+								<td class="py-4 text-center">
+									<UiTickOrX :check="item.vetoed"></UiTickOrX>
 								</td>
 							</tr>
 						</tbody>

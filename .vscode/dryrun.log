@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/javiromero/Documents/dev/xrpl/xrpl-node-manager'
+make: Leaving directory `/Users/javiromero/Documents/dev/xrpl/xrpl-node-manager'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

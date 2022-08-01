@@ -67,3 +67,12 @@ export enum ProtocolType {
   JSONRPC = 'jsonRpc',
   GRPC = 'grpc'
 }
+
+export enum Topic {
+  START = 'start',
+  STOP = 'stop',
+  CONFIG = 'config',
+  FEATURES = 'features',
+  STATUS = 'status',
+  STATS = 'stats'
+}

@@ -9,6 +9,7 @@ export const store = createStore({
         stats: {},
         status: false,
         config: {},
+        features: {},
       },
       option: '',
     }
@@ -19,6 +20,9 @@ export const store = createStore({
     },
     config (state, config) {
       state.ws.config = config;
+    },
+    features (state, features) {
+      state.ws.features = features;
     },
     option (state, option) {
       state.option = option;
