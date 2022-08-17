@@ -19,6 +19,7 @@ pub fn get_settings() -> &'static Settings {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Server {
   pub port: u16,
+  pub refresh: u64
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -30,6 +31,7 @@ pub struct Logger {
 pub struct Settings {
   pub environment: String,
   pub server: Server,
+  pub rpc_endpoint: String,
   pub logger: Logger,
 }
 

@@ -134,11 +134,11 @@ export default defineComponent({
     },
     send(topic: Topic) {
       this.isWorking = true;
-      this.wsClient.send(topic);
+      this.wsClient.openFeed(topic);
       if (topic === Topic.START) { // TODO: fix this, temporary 
         setTimeout(() => {
-          this.wsClient.send(Topic.CONFIG);
-          this.wsClient.send(Topic.FEATURES);
+          this.wsClient.openFeed(Topic.CONFIG);
+          this.wsClient.openFeed(Topic.FEATURES);
         }, 1000);
       }
     },

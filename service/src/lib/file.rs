@@ -3,7 +3,6 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use fehler::throws;
 use anyhow::Error;
-use tracing::debug;
 
 #[throws(_)]
 pub async fn read_cfg(filepath: String) -> HashMap<String,HashMap<String,String>> {

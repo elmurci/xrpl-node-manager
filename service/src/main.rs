@@ -1,48 +1,79 @@
-use tokio::task;
-use tracing::{error, info, debug};
+#[macro_use]
+extern crate lazy_static;
 
-// #[cfg(test)]
-// mod tests;
+use std::collections::HashMap;
+use tokio::sync::Mutex;
+use enums::Topic;
+use tokio::sync::mpsc;
+use warp::{ws::Message, Filter, Rejection};
+use tracing::info;
+
+mod handler;
+mod ws;
+mod logger;
+mod settings;
+mod node;
+mod rpc_client;
+mod lib;
+mod structs;
+mod enums;
+mod worker;
 
 use settings::get_settings;
 
-use crate::{server::Server, handler::handle_incoming_message, structs::IncomingMessage, enums::Topic};
+type Result<T> = std::result::Result<T, Rejection>;
 
-mod lib;
-mod logger;
-mod server;
-mod ws_client;
-mod settings;
-mod structs;
-mod enums;
-mod handler;
-mod rpc_client;
-mod node;
+// Global clients and topics
+lazy_static! {
+    pub static ref CLIENTS: Mutex<HashMap<String, Client>> = Mutex::new(HashMap::new());
+    pub static ref TOPICS: Mutex<Vec<Topic>> = Mutex::new(vec!());
+}
+    
+#[derive(Debug, Clone)]
+pub struct Client {
+    pub user_id: String,
+    pub topics: Vec<Topic>,
+    pub sender: Option<mpsc::UnboundedSender<std::result::Result<Message, warp::Error>>>,
+}
 
 #[tokio::main]
 async fn main() {
-  info!("Starting Websockets server!");
-  let settings = get_settings();
-  logger::setup();
-  let result = handle_incoming_message(IncomingMessage { topic: Topic::Config }).await;
-  debug!("file - {:?}", result);
-  // 1. Logs
-  // 2. Log rotate
-  // 3. Stop
-  // 4. Start
-  // 5. Log level
-  // 6. Configuration
-  // 7. Server info
-  task::spawn(async {
-    // Admin endpoint WS?
-    // let mut client = Client::run("ws://localhost:6006").await;
-    //client.listen().await;
-    // client.send("pepe");
-  });
-  match Server::new(settings.server.port).start().await {
-    Ok(()) => {}
-    Err(error) => {
-      error!("Errror {}", error);
-    }
-  };
+    let settings = get_settings();
+    logger::setup();
+
+    let health_route = warp::path!("health").and_then(handler::health_handler);
+
+    let register = warp::path("register");
+    let register_route = register
+        .and(warp::post())
+        .and(warp::body::json())
+        .and_then(handler::register_handler)
+        .or(register
+            .and(warp::delete())
+            .and(warp::path::param())
+            .and_then(handler::unregister_handler));
+
+    let ws_route = warp::path("ws")
+        .and(warp::ws())
+        .and(warp::path::param())
+        .and_then(handler::ws_handler);
+
+    let cors = warp::cors()
+        .allow_any_origin()
+        .allow_headers(vec!["content-type"])
+        .allow_methods(vec!["POST", "GET"]);
+
+    let routes = health_route
+        .or(register_route)
+        .or(ws_route)
+        .with(cors); // TODO: Check the need of CORS
+
+    info!("Starting updates worker");
+    tokio::task::spawn(async move {
+        worker::main_worker(settings.server.refresh, &settings.rpc_endpoint).await;
+    });
+
+    info!("Starting Websockets server! (Port: {})", settings.server.port);
+    warp::serve(routes).run(([127, 0, 0, 1], settings.server.port)).await;
+
 }

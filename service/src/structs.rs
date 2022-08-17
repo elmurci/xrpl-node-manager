@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tracing::debug;
 
-use crate::{enums::{Topic, ResponseStatus, Protocol, DatabaseType}, lib::util::{get_bool_from_binary, get_vec_from_hashmap}};
+use crate::{enums::{Topic, ResponseStatus, Protocol, DatabaseType, EventType}, lib::util::{get_bool_from_binary, get_vec_from_hashmap}};
 
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct IncomingMessage {
@@ -12,6 +12,7 @@ pub struct IncomingMessage {
 
 #[derive(Debug, Serialize)]
 pub struct OutgoingMessage {
+    pub event: EventType,
     pub topic: Topic,
     pub status: ResponseStatus,
     pub message: Value

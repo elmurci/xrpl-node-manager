@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use serde::{Serialize, Deserialize};
 
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(PartialEq, Clone, Deserialize, Serialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum Topic {
     Stop,
@@ -16,14 +16,22 @@ pub enum Topic {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "lowercase")]
 pub enum ResponseStatus {
     Error,
     Success,
 }
 
+#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum EventType {
+    HELLO,
+    SUBSCRIBE,
+    UNSUBSCRIBE,
+}
+
 #[derive(Deserialize, Serialize, Debug)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "lowercase")]
 pub enum Protocol {
     Http,
     Https,

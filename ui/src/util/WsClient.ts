@@ -1,5 +1,6 @@
-import { Topic } from "@/enums";
+import { EventType, Topic } from "@/enums";
 import { store } from "@/store";
+import { WsMessage } from "@/types/WsMessage";
 
 export default class WsClient {
 
@@ -8,26 +9,24 @@ export default class WsClient {
   endpoint: string;
 
   constructor(endpoint: string) {
+    console.log('endpoint', endpoint);
     this.client = new WebSocket(endpoint);
     this.endpoint = endpoint;
     this.connect();
   }
 
-  periodic(interval: number, topic: Topic) {
-    const intervalId = setInterval(() => {
-        this.send(topic);
-    }, interval);
-  }
-
   connect() {
-    console.log('connecting to ', this.endpoint);
-    this.client = new WebSocket(this.endpoint);
-    this.client.onerror = () => {
-        console.log('Connection Error');
+    console.log('connect-------------');
+    this.client.onerror = (e) => {
+        console.log('Connection Error', e);
     };
     
     this.client.onopen = () =>  {
         console.log('WebSocket Client Connected');
+        this.client.send(JSON.stringify({
+          event: EventType.SUBSCRIBE,
+          topics: [Topic.STATUS, Topic.CONFIG],
+        }));
         store.commit('wsConnected');
     };
     
@@ -35,12 +34,10 @@ export default class WsClient {
         console.log('echo-protocol Client Closed');
         store.commit('wsDisconnected');
         store.commit('status', {});
-        setTimeout(() => {
-            this.connect();
-        }, 1000);
     };
     
     this.client.onmessage = (e) =>  {
+        console.log('onmessage-------------', e);
         if (typeof e.data === 'string') {
             const json = JSON.parse(e.data);
             console.log("received: " + json.topic, json);
@@ -65,20 +62,41 @@ export default class WsClient {
                 default:
                   // TODO
             }
+            postMessage(json);     
         }
     };
   }
 
-  send(
-    topic: Topic,
-  ) {
-    if (this.client.readyState === this.client.OPEN) {
-        this.client.send(JSON.stringify({
-            topic,
-        }));
-    } else {
-        // TODO
-        console.log('Error, not connected');
+  closeFeed(topic: Topic) {
+    try {
+      const unsubscribe = {
+        event: EventType.UNSUBSCRIBE,
+        topic,
+      };
+      this.client.send(JSON.stringify(unsubscribe));
+      this.client.close();
+      postMessage({
+        type: "FEED_CLOSED",
+      });
+    } catch (e) {
+      console.error("Caught error", e);
+      throw e;
+    }
+  }
+
+  openFeed(topic: Topic) {
+    try {
+      const subscribe: WsMessage = {
+        event: EventType.SUBSCRIBE,
+        topic,
+      };
+      this.client.send(JSON.stringify(subscribe));
+      postMessage({
+        type: "FEED_OPEN",
+      });
+    } catch (e) {
+      console.error("Caught error", e);
+      throw e;
     }
   }
 }

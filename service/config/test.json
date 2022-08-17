@@ -2,10 +2,11 @@
   "environment": "test",
 
   "server": {
-    "port": 8088
+    "port": 8080,
+    "refresh": 2000
   },
-
+  "rpc_endpoint": "http://127.0.0.1:5005",
   "logger": {
-    "level": "error"
+    "level": "debug"
   }
 }

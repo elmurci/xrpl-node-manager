@@ -1,19 +1,18 @@
-import DefaultLayout from "@/layouts/default/index.vue";
-import { computed, defineComponent, inject } from "vue";
-import { useStore } from "vuex";
-import moment from "moment";
+import DefaultLayout from '@/layouts/default/index.vue';
+import { computed, defineComponent, inject } from 'vue';
+import { useStore } from 'vuex';
+import moment from 'moment';
 import { useI18n } from 'vue-i18n';
 import UiTickOrX from '@/components/custom/UiTickOrX.vue';
-import WsClient from "@/util/WsClient";
-import { Topic } from "@/enums";
+import { Topic } from '@/enums';
 
 export default defineComponent({
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     DefaultLayout,
     UiTickOrX,
   },
-  inject: ['wsClient'],
+  inject: ['worker'],
   setup() {
     const store = useStore();
     const { t, locale } = useI18n({
@@ -25,7 +24,6 @@ export default defineComponent({
     const stats = computed(() => store.state.ws.stats);
     const config = computed(() => store.state.ws.config);
     const features = computed(() => store.state.ws.features);
-    this.wsClient.periodic(1000, Topic.STATS);
     return {
       store,
       wsConnected,
@@ -41,10 +39,14 @@ export default defineComponent({
   },
   data() {
     return {
-      wsClient: this.wsClient as unknown as WsClient,
+      worker: this.worker,
       isLoadingData: false,
-      errorText: "",
+      errorText: '',
       error: false,
     };
   },
+  mounted () {
+    console.log('this.worker', this.worker);
+    // this.worker.postMessage('PERIQUITO!!!');
+  }
 });

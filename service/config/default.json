@@ -2,16 +2,10 @@
   "environment": "development",
 
   "server": {
-    "port": 8080
+    "port": 8080,
+    "refresh": 2000
   },
-
-  "topics": [
-    {
-      "topic": "",
-      "frequency": ""
-    }
-  ],
-
+  "rpc_endpoint": "http://127.0.0.1:5005",
   "logger": {
     "level": "debug"
   }
