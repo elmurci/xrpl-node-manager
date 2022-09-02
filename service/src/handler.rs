@@ -1,4 +1,4 @@
-use crate::{ws, Client, Result, enums::Topic, CLIENTS};
+use crate::{ws, Client, Result, enums::Topic, CLIENTS, structs::OutgoingMessage};
 use serde::{Deserialize, Serialize};
 use tracing::debug;
 use uuid::Uuid;
@@ -15,7 +15,7 @@ pub struct RegisterResponse {
     uuid: String,
 }
 
-pub async fn update(topic: Topic, msg: Value) -> Result<impl Reply> {
+pub async fn update(topic: Topic, msg: OutgoingMessage) -> Result<impl Reply> {
     CLIENTS.lock().await.iter()
         .filter(|(_, client)| client.topics.contains(&topic))
         .for_each(|(_, client)| {

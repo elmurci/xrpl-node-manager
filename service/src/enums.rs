@@ -28,6 +28,7 @@ pub enum EventType {
     HELLO,
     SUBSCRIBE,
     UNSUBSCRIBE,
+    FEED,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
