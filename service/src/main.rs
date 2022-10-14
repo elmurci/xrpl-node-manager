@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 use tokio::sync::Mutex;
 use enums::Topic;
 use tokio::sync::mpsc;
@@ -20,6 +20,8 @@ mod enums;
 mod worker;
 
 use settings::get_settings;
+
+use crate::{handler::Handler, worker::Worker};
 
 type Result<T> = std::result::Result<T, Rejection>;
 
@@ -41,22 +43,35 @@ async fn main() {
     let settings = get_settings();
     logger::setup();
 
-    let health_route = warp::path!("health").and_then(handler::health_handler);
+    // Handler
+    let handler = Arc::new(Handler::new(settings));
 
+    // Routes
+    let h = Arc::clone(&handler);
+    let health_route = warp::path!("health").and_then(move || h.health_handler());
     let register = warp::path("register");
+    let h = Arc::clone(&handler);
+    let h2 = Arc::clone(&handler);
     let register_route = register
         .and(warp::post())
         .and(warp::body::json())
-        .and_then(handler::register_handler)
+        .and_then(move |body| h.register_handler(body))
         .or(register
             .and(warp::delete())
             .and(warp::path::param())
-            .and_then(handler::unregister_handler));
+            .and_then(|id| h2.unregister_handler(id)));
+
+    let start_route = warp::post()
+        .and(warp::path("start"))
+        .and_then(|| handler.start_handler());
+
+    let stop_route = warp::path("stop")
+        .and_then(|| handler.stop_handler());
 
     let ws_route = warp::path("ws")
         .and(warp::ws())
         .and(warp::path::param())
-        .and_then(handler::ws_handler);
+        .and_then(|ws, id| handler.ws_handler(ws, id));
 
     let cors = warp::cors()
         .allow_any_origin()
@@ -65,12 +80,16 @@ async fn main() {
 
     let routes = health_route
         .or(register_route)
+        .or(start_route)
+        .or(stop_route)
         .or(ws_route)
         .with(cors); // TODO: Check the need of CORS
 
     info!("Starting updates worker");
+    let worker = Worker::new(Arc::clone(&handler), settings.server.refresh);
+
     tokio::task::spawn(async move {
-        worker::main_worker(settings.server.refresh, &settings.rpc_endpoint).await;
+        worker.start(settings.server.refresh).await;
     });
 
     info!("Starting Websockets server! (Port: {})", settings.server.port);

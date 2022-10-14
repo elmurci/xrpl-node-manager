@@ -1,6 +1,6 @@
 {
   "environment": "test",
-
+  "config": "test/rippled.cfg",
   "server": {
     "port": 8080,
     "refresh": 2000

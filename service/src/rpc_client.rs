@@ -4,18 +4,19 @@ use fehler::throws;
 use anyhow::{Error, bail};
 use reqwest::StatusCode;
 use serde_json::Value;
-use tracing::{info, debug};
+use tracing::debug;
 
 use crate::structs::OutgoingRpcMessage;
 
-pub struct RpcClient<'a> {
-    endpoint: &'a str,
+#[derive(Clone)]
+pub struct RpcClient {
+    endpoint: String,
 }
   
-impl<'a> RpcClient<'a> {
-    pub(crate) fn new(endpoint: &'a str) -> RpcClient {
+impl RpcClient {
+    pub(crate) fn new<T: Into<String>>(endpoint: T) -> RpcClient {
         RpcClient {
-            endpoint
+            endpoint: endpoint.into(),
         }
     }
     #[throws(_)]
@@ -25,7 +26,7 @@ impl<'a> RpcClient<'a> {
             params,
         };
         let client = reqwest::Client::new();
-        let response = client.post(self.endpoint)
+        let response = client.post(&self.endpoint)
             .json(&request)
             .send()
             .await?;
