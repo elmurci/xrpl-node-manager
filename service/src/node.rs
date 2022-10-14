@@ -8,19 +8,21 @@ use async_process::Command;
 
 use crate::{rpc_client::RpcClient, lib::file::read_cfg, structs::NodeConfig};
 
-pub struct Node<'a> {
-    endpoint: &'a str,
-    rpc_client: RpcClient<'a>,
+#[derive(Clone)]
+pub struct Node {
+    endpoint: String,
+    rpc_client: RpcClient,
     config_path: String,
-  }
+}
   
-impl<'a> Node<'a> {
-    pub(crate) fn new(endpoint: &'a str) -> Node {
-        let rpc_client = RpcClient::new(endpoint);
+impl Node {
+    pub(crate) fn new<E: Into<String>, C: Into<String>>(endpoint: E, config_path: C) -> Node {
+        let endpoint = endpoint.into();
+        let rpc_client = RpcClient::new(&endpoint);
         Node {
             endpoint,
             rpc_client,
-            config_path: "test/rippled.cfg".to_string(),
+            config_path: config_path.into(),
         }
     }
 
@@ -41,7 +43,7 @@ impl<'a> Node<'a> {
         if output.status.success() {
             let r = String::from_utf8_lossy(&output.stdout);
             debug!("Start command result {:?}", r);
-            serde_json::from_str("{}")?
+            self.info().await.unwrap()
         } else {
             debug!("Start command err {:?}", &output);
             let err = String::from_utf8_lossy(&output.stderr).to_string();
@@ -61,7 +63,7 @@ impl<'a> Node<'a> {
     #[throws(_)]
     pub(crate) async fn config(&self) -> Value {
         debug!("Config request");
-        let result: NodeConfig = NodeConfig::from(read_cfg(self.config_path.clone()).await?);
+        let result: NodeConfig = NodeConfig::from(read_cfg(&self.config_path).await?);
         serde_json::to_value(result).unwrap()
     }
 

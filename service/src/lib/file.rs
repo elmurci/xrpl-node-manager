@@ -5,7 +5,7 @@ use fehler::throws;
 use anyhow::Error;
 
 #[throws(_)]
-pub async fn read_cfg(filepath: String) -> HashMap<String,HashMap<String,String>> {
+pub async fn read_cfg(filepath: &str) -> HashMap<String,HashMap<String,String>> {
     let file = File::open(filepath).unwrap();
     let reader = BufReader::new(file);
     let mut result: HashMap<String,HashMap<String, String>> = HashMap::new();

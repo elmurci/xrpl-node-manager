@@ -17,7 +17,7 @@ export default defineComponent({
     const store = useStore();
     const { t, locale } = useI18n({
       useScope: 'global'
-    })
+    });
     const wsConnected = computed(() => store.state.ws.open);
     const status = computed(() => store.state.ws.status);
     const info = computed(() => store.state.ws.info);

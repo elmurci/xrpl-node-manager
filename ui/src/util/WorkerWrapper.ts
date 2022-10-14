@@ -1,6 +1,6 @@
 import { EventType } from '@/enums';
 import { WsMessage } from '@/types/WsMessage';
-import MyWorker from '../workers/feed.worker?worker&url';
+import { store } from '@/store';
 
 export default class AppWorker {
   worker: Worker;
@@ -9,16 +9,25 @@ export default class AppWorker {
       type: 'module'
     });
     worker.postMessage({ event: EventType.ENDPOINT, value: `ws://127.0.0.1:8080/ws/${uuid}`});
-
+    store.commit('wsConnected', true); // TODO, fix this
     worker.onmessage = (event) => {
-        console.log('pepico', event.data);
-        switch (event.data.type) {
-            case "FEED_CLOSED":
-              console.log("frontend: feed killed");
+      switch (event.data.topic) {
+          case 'feed_closed':
+            console.log('frontend: feed killed');
+            break;
+          case 'status':
+            console.log('status: actualizamos estado', event.data.message)
+            store.commit('info', event.data.message.info);
+            store.commit('status', event.data.status === 'success');
+            break;
+          case 'features':
+              console.log('features: actualizamos estado', event.data.message)
+              store.commit('features', event.data.message.features);
+              store.commit('status', event.data.status === 'success');
               break;
-            default:
-              console.log('feed ', event);
-        }
+          default:
+            console.log('feed ', event);
+      }
     };
 
     this.worker = worker;

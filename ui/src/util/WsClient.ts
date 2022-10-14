@@ -37,7 +37,6 @@ export default class WsClient {
     };
     
     this.client.onmessage = (e) =>  {
-        console.log('onmessage-------------', e);
         if (typeof e.data === 'string') {
             const json = JSON.parse(e.data);
             console.log("received: " + json.topic, json);

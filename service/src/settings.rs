@@ -30,6 +30,7 @@ pub struct Logger {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Settings {
   pub environment: String,
+  pub config: String,
   pub server: Server,
   pub rpc_endpoint: String,
   pub logger: Logger,
@@ -56,7 +57,7 @@ impl Settings {
 }
 
 impl fmt::Display for Server {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
     write!(f, "http://localhost:{}", &self.port)
   }
 }

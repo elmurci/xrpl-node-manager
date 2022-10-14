@@ -1,7 +1,6 @@
 use std::{collections::HashMap, str::FromStr};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use tracing::debug;
 
 use crate::{enums::{Topic, ResponseStatus, Protocol, DatabaseType, EventType}, lib::util::{get_bool_from_binary, get_vec_from_hashmap}};
 

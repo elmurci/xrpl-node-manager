@@ -19,11 +19,15 @@ let wr:WorkerWrapper;
 // External function in module
 function initializeApp () {
   return new Promise(async (resolve, reject) => {
-    console.log('registration start');
-    const registration = await axios.post('http://127.0.0.1:8080/register', { 'user_id': uuidv4() })
-    console.log('registration', registration.data.uuid);
-    wr = new WorkerWrapper(registration.data.uuid);
-    resolve(true);
+    try {
+      console.log('registration start');
+      const registration = await axios.post('http://127.0.0.1:8080/register', { 'user_id': uuidv4() })
+      console.log('registration', registration.data.uuid);
+      wr = new WorkerWrapper(registration.data.uuid);
+      resolve(true);
+    } catch (e) {
+      resolve(false);
+    }
   })
 }
 
@@ -53,7 +57,4 @@ initializeApp().then(_ => {
   } else {
       console.log('Error message : ', error.message);
   }
-  console.log(error.config);
-});;
-
-
+});
