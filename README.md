@@ -13,11 +13,11 @@ There are two components:
 
 ```mermaid
 graph TD
-    A[xrpld node] -->B[XRPL Node Manager - service]
-    B[XRPL Node Manager - service] -->A[xrpld node]
-    B[XRPL Node Manager - service]-->C[XRPL Node Manager - UI]
-    C[XRPL Node Manager - UI]-->B[XRPL Node Manager - service]
-    C[XRPL Node Manager - UI]-->A[xrpld node]
+    A[xrpld node] -->B[service]
+    B[service] -->A[xrpld node]
+    B[service]-->C[UI]
+    C[UI]-->B[service]
+    C[UI]-->A[xrpld node]
 ```
 
 ## Run locally
