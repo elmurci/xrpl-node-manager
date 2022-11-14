@@ -26,3 +26,12 @@ For now, you need to be running (or point to one with admin access) a `rippled` 
 ## Demo
 
 ![alt text](xrplnodemanager.gif)
+
+## TODO/Ideas
+
+- Issue tokens (dev)
+- AMM features
+- Sidechains
+- Wallet creation / Faucet (dev)
+- Explorer
+- ...
