@@ -7,8 +7,9 @@ PoC. Work in progress...
 User friendly tool to manage a XRPL Node.
 
 ```mermaid
-graph TD;
-    A[XRPL Node (Websockets)]-->B[XRPL Node Manager (service)]--> C[XRPL Node Manager (UI)];
+graph TD
+    A[xrpld node] -->B[XRPL Node Manager - service]
+    B[XRPL Node Manager - service]-->C[XRPL Node Manager - UI]
 ```
 
 There are two components: 
