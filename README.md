@@ -17,7 +17,6 @@ graph TD
     B[XRPL Node Manager - service] -->A[xrpld node]
     B[XRPL Node Manager - service]-->C[XRPL Node Manager - UI]
     C[XRPL Node Manager - UI]-->B[XRPL Node Manager - service]
-    C[XRPL Node Manager - UI]-->A[xrpld node]
 ```
 
 ## Run locally
