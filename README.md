@@ -9,7 +9,9 @@ User friendly tool to manage a XRPL Node.
 ```mermaid
 graph TD
     A[xrpld node] -->B[XRPL Node Manager - service]
+    B[XRPL Node Manager - service] -->A[xrpld node]
     B[XRPL Node Manager - service]-->C[XRPL Node Manager - UI]
+    C[XRPL Node Manager - UI]-->B[XRPL Node Manager - service]
 ```
 
 There are two components: 
