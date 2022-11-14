@@ -1,8 +1,8 @@
-use crate::{Client, enums::{Topic, EventType}, CLIENTS, TOPICS};
+use crate::{enums::{Topic, EventType}, CLIENTS, TOPICS, Client};
 use futures::{FutureExt, StreamExt};
 use serde::Deserialize;
 use serde_json::from_str;
-use tokio::{sync::mpsc};
+use tokio::sync::mpsc;
 use tokio_stream::wrappers::UnboundedReceiverStream;
 use tracing::{debug, error};
 use warp::ws::{Message, WebSocket};
@@ -24,7 +24,7 @@ pub async fn client_connection(ws: WebSocket, id: String, mut client: Client) {
         }
     }));
 
-    client.sender = Some(client_sender);
+    // client.sender = Some(client_sender);
     CLIENTS.lock().await.insert(id.clone(), client);
 
     debug!("{} connected", id);

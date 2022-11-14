@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use crate::enums::{EventType, ResponseStatus, Topic};
-use crate::handler::update;
 use crate::structs::OutgoingMessage;
 use crate::{handler, Node, CLIENTS, TOPICS};
 use tokio;
