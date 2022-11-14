@@ -6,12 +6,18 @@ PoC. Work in progress...
 
 User friendly tool to manage a XRPL Node.
 
-## Run locally
+```mermaid
+graph TD;
+    XRPL Node (Websockets)-->XRPL Node Manager (service);
+    XRPL Node Manager (service)-->  XRPL Node Manager (UI);
+```
 
 There are two components: 
 
-- `service`: backend interacting with the XRPL Node
-- `ui`: Frontend
+- `service`: a rust backend interacting with the XRPL Node. It connects via websockets to the node and also executes adhoc requests.
+- `ui`: Frontend that connects to the `service` to provide functionality.
+
+## Run locally
 
 For now, you need to be running (or point to one with admin access) a `rippled` node. Configuration can be changed in the `service` (`config` folder)
 

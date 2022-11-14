@@ -1,6 +1,5 @@
 use crate::{Client, enums::{Topic, EventType}, CLIENTS, TOPICS};
-use futures::{FutureExt, StreamExt, future::join_all};
-use futures::stream;
+use futures::{FutureExt, StreamExt};
 use serde::Deserialize;
 use serde_json::from_str;
 use tokio::{sync::mpsc};
