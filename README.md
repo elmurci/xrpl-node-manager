@@ -16,8 +16,8 @@ graph TD
     A[xrpld node] -->B[service]
     B[service] -->A[xrpld node]
     B[service]-->C[UI]
-    C[UI]-->B[service]: 'websocket'
-    C[UI]-->A[xrpld node]
+    C[UI]-->B[service]
+    C[UI]-->|websocket| A[xrpld node]
 ```
 
 ## Run locally
