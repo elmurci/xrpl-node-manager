@@ -6,18 +6,19 @@ PoC. Work in progress...
 
 User friendly tool to manage a XRPL Node.
 
+There are two components: 
+
+- `service`: a rust backend interacting with the XRPL Node. It connects via websockets to the node and also executes adhoc requests.
+- `ui`: Frontend that connects to the `service` to provide functionality.
+
 ```mermaid
 graph TD
     A[xrpld node] -->B[XRPL Node Manager - service]
     B[XRPL Node Manager - service] -->A[xrpld node]
     B[XRPL Node Manager - service]-->C[XRPL Node Manager - UI]
     C[XRPL Node Manager - UI]-->B[XRPL Node Manager - service]
+    C[XRPL Node Manager - UI]-->A[xrpld node]
 ```
-
-There are two components: 
-
-- `service`: a rust backend interacting with the XRPL Node. It connects via websockets to the node and also executes adhoc requests.
-- `ui`: Frontend that connects to the `service` to provide functionality.
 
 ## Run locally
 
