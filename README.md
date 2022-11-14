@@ -8,8 +8,7 @@ User friendly tool to manage a XRPL Node.
 
 ```mermaid
 graph TD;
-    XRPL Node (Websockets)-->XRPL Node Manager (service);
-    XRPL Node Manager (service)-->  XRPL Node Manager (UI);
+    A[XRPL Node (Websockets)]-->B[XRPL Node Manager (service)]--> C[XRPL Node Manager (UI)];
 ```
 
 There are two components: 
