@@ -24,7 +24,7 @@ pub async fn client_connection(ws: WebSocket, id: String, mut client: Client) {
         }
     }));
 
-    // client.sender = Some(client_sender);
+    client.sender = Some(client_sender);
     CLIENTS.lock().await.insert(id.clone(), client);
 
     debug!("{} connected", id);
